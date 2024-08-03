@@ -2,5 +2,8 @@
 name = "open-wait"
 version = "0.1.0"
 edition = "2021"
+authors = ["ccyuen1"]
+license = "MIT OR Apache-2.0"
+repository = "https://github.com/ccyuen1/open-wait"
 
 [dependencies]
