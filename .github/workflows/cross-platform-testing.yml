@@ -1,0 +1,48 @@
+name: cross-platform-testing
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+env:
+  CARGO_TERM_COLOR: always
+
+jobs:
+  build:
+
+    runs-on: ${{matrix.os}}
+    
+    env:
+      RUST_BACKTRACE: 1
+
+    strategy:
+      matrix:
+        build: [linux, linux-arm, macos, win-msvc, win-gnu]
+        include:
+          - build: linux
+            os: ubuntu-latest
+          - build: linux-arm
+            os: ubuntu-latest
+          - build: macos
+            os: macos-latest
+            target: x86_64-apple-darwin
+          - build: win-msvc
+            os: windows-latest
+          - build: win-gnu
+            os: windows-latest
+
+    steps:
+    - uses: actions/checkout@v4
+    - name: Install Cargo and Rust
+      uses: actions-rs/toolchain@v1
+      with:
+        toolchain: nightly
+        override: true
+        profile: minimal
+        components: rustfmt, clippy
+    - run: cargo fmt --check
+    - run: cargo clippy
+    - run: cargo build --all-features
+    - run: cargo test
