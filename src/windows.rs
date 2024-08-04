@@ -16,7 +16,7 @@ pub fn commands(path: impl AsRef<OsStr>) -> Vec<Command> {
 
 pub fn with_command(path: impl AsRef<OsStr>, app: impl AsRef<OsStr>) -> Command {
     let mut cmd = Command::new(app);
-    cmd.arg(wrap_quotes(path));
+    cmd.arg(path);
     cmd
 }
 
